@@ -1,0 +1,43 @@
+version: '3.8'
+services:
+  web:
+    container_name: web-prod
+    build:
+      context: ./angular-app
+      target: production
+    ports:
+      - "4200:4200"
+    depends_on:
+      - api
+    
+  api:
+    container_name: api-prod
+    build: 
+      context: ./api-service
+      target: production
+    ports:
+      - "4000:4000"
+    environment:
+      DATABASE_URL: postgresql://user:password@pg:5432/tictactoe
+      UVICORN_LOG_LEVEL: warning
+      FASTAPI_LOG_LEVEL: warning
+    depends_on:
+      pg:
+        condition: service_healthy
+
+  pg:
+    image: postgres:13
+    environment:
+      - POSTGRES_USER=user
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_DB=tictactoe
+    volumes:
+      - pg_data_prod:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U user -d tictactoe"]
+      interval: 3s
+      timeout: 1s
+      retries: 5
+
+volumes:
+  pg_data_prod:

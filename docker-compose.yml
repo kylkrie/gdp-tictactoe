@@ -1,0 +1,48 @@
+version: '3.8'
+services:
+  web:
+    container_name: web-local
+    build:
+      context: ./angular-app
+      target: local
+    ports:
+      - "4200:4200"
+    volumes:
+      # link root dir so file changes are reflected in the container during active development
+      - ./angular-app:/usr/src/app
+      # mask (exclude) node_modules
+      - /usr/src/app/node_modules
+    depends_on:
+      - api
+
+  api:
+    container_name: api-local
+    build: 
+      context: ./api-service
+      target: local
+    ports:
+      - "4000:4000"
+    environment:
+      DATABASE_URL: postgresql://user:password@pg:5432/tictactoe
+    volumes:
+      - ./api-service/app:/usr/src/app/app
+    depends_on:
+      pg:
+        condition: service_healthy
+
+  pg:
+    image: postgres:13
+    environment:
+      - POSTGRES_USER=user
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_DB=tictactoe
+    volumes:
+      - pg_data_local:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U user -d tictactoe"]
+      interval: 3s
+      timeout: 1s
+      retries: 5
+
+volumes:
+  pg_data_local:
