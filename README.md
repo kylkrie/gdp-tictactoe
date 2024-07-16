@@ -19,7 +19,7 @@ git clone https://github.com/kylkrie/gdp-tictactoe.git
 ```sh
 cd gdp-tictactoe
 ```
-3. use docker compose to run the project in either [dev](#development-setup) or [prod](#production-setup) configuration
+3. Use docker compose to run the project in either [dev](#development-setup) or [prod](#production-setup) configuration
 
 ## Development Setup
 
@@ -32,7 +32,7 @@ docker compose up --build
 ## Production Setup
 
 This provides a way of testing the production build flow. Issues with production specific configs, or bundling/copying static assets can happen for example.
-Uses nginx to serve the website, this is so the production flow can be tested locally for the purpose of this exercise. For actual production I would have a CICD flow to build and upload to S3 behind a CDN like Cloudfront or Cloudfront. This removes the need to manage an nginx server.
+Uses nginx to serve the website, this is so the production flow can be tested locally for the purpose of this exercise. For actual production I would have a CICD flow to build and upload to S3 behind a CDN like Cloudfront or Cloudflare. This removes the need to manage an nginx server.
 
 ```sh
 docker compose -f docker-compose.prod.yml up --build
