@@ -2,6 +2,8 @@ from typing import List
 from fastapi import APIRouter, Depends, HTTPException, Request
 from pydantic import BaseModel
 
+from app.exceptions.db import ItemNotFoundException
+
 from .dto import BoardListResponse, BoardResponse, PublicBoard
 from app.services.board import BoardService
 
@@ -45,7 +47,7 @@ async def get_boards(board_service: BoardService = Depends(get_board_service)):
 async def get_board(id: int, board_service: BoardService = Depends(get_board_service)):
     board_entity = await board_service.get_board(id)
     if board_entity is None:
-        raise HTTPException(status_code=404, detail="Board not found")
+        raise ItemNotFoundException("Board", id)
 
     return BoardResponse(board=PublicBoard.from_entity(board_entity))
 

@@ -1,6 +1,8 @@
 from contextlib import asynccontextmanager
 from fastapi import FastAPI
 
+from app.exceptions import add_exception_handlers
+
 from .stores.boards.store import BoardStore
 from .services.board import BoardService
 
@@ -28,3 +30,4 @@ async def lifespan(app: FastAPI):
 app = FastAPI(lifespan=lifespan)
 
 app.include_router(api_router)
+add_exception_handlers(app)
