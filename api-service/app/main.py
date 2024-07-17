@@ -39,9 +39,11 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+
 @app.options("/{full_path:path}")
 async def options_route(full_path: str):
     return {"message": "OK"}
+
 
 app.include_router(api_router)
 add_exception_handlers(app)
