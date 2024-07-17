@@ -1,5 +1,6 @@
 from contextlib import asynccontextmanager
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 
 from app.auth import bearer_token_middleware
 from app.exceptions import add_exception_handlers
@@ -29,6 +30,18 @@ async def lifespan(app: FastAPI):
 
 
 app = FastAPI(lifespan=lifespan)
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+@app.options("/{full_path:path}")
+async def options_route(full_path: str):
+    return {"message": "OK"}
 
 app.include_router(api_router)
 add_exception_handlers(app)

@@ -26,6 +26,9 @@ async def get_user_id(req: Request) -> str:
 
 
 async def bearer_token_middleware(req: Request, call_next):
+    if req.method == "OPTIONS":
+        return await call_next(req)
+
     try:
         token = await security(req)
         if token is None:

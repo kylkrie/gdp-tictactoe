@@ -1,7 +1,7 @@
 CREATE TABLE boards (
     id SERIAL PRIMARY KEY,
-    -- I would normally make this an int or guid but I'm not doing full auth
-    user_id VARCHAR(255),
+    -- I would normally make this an int or uuid but I'm not doing full auth
+    user_id VARCHAR(255) NOT NULL,
     spaces BYTEA NOT NULL,
     created_at TIMESTAMP NOT NULL DEFAULT (NOW()),
     updated_at TIMESTAMP NOT NULL DEFAULT (NOW())
