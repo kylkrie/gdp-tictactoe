@@ -1,6 +1,7 @@
 from contextlib import asynccontextmanager
 from fastapi import FastAPI
 
+from app.auth import bearer_token_middleware
 from app.exceptions import add_exception_handlers
 
 from .stores.boards.store import BoardStore
@@ -31,3 +32,5 @@ app = FastAPI(lifespan=lifespan)
 
 app.include_router(api_router)
 add_exception_handlers(app)
+
+app.middleware("http")(bearer_token_middleware)

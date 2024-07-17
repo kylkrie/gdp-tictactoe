@@ -1,6 +1,7 @@
 import pytest
 from app.models.board import (
     BoardModel,
+    BoardPlayer,
     BoardResult,
     InvalidMoveException,
     BoardDeserializationException,
@@ -32,10 +33,15 @@ def test_initial_board_state(board):
 
 
 def test_make_move(board):
+    assert board.get_current_player() == BoardPlayer.X
     board.make_move(0)
     assert str(board) == "x________"
+
+    assert board.get_current_player() == BoardPlayer.O
     board.make_move(4)
     assert str(board) == "x___o____"
+
+    assert board.get_current_player() == BoardPlayer.X
 
 
 def test_invalid_move(board):

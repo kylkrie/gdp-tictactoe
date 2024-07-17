@@ -1,5 +1,7 @@
 import random
 from typing import List
+from app.exceptions.auth import UnauthorizedException
+from app.exceptions.db import ItemNotFoundException
 from app.models.board import BoardModel
 from app.stores.boards.entity import BoardEntity
 from app.stores.boards.store import BoardStore
@@ -25,6 +27,11 @@ class BoardService:
 
     async def make_move(self, id: int, user_id: str, position: int) -> BoardEntity:
         entity = await self.get_board(id)
+        if not entity:
+            raise ItemNotFoundException("Board", id)
+        if entity.user_id != user_id:
+            raise UnauthorizedException("Board belongs to another user")
+
         model = BoardModel.from_bytes(entity.spaces)
         # player move
         model.make_move(position)

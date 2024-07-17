@@ -1,9 +1,17 @@
 #!/bin/sh
 set -e
 
+# tests should happen in the CI flow
+# putting it here to at least show I have them running before starting prod
+echo "Running pytest"
+if ! pytest; then
+    echo "Pytest failed. Aborting."
+    exit 1
+fi
+
 echo "Running migrations..."
 if ! python run_migrations.py; then
-    echo "Migration failed. Exiting."
+    echo "Migration failed. Aborting."
     exit 1
 fi
 

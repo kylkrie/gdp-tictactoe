@@ -19,6 +19,8 @@ services:
       - "4000:4000"
     environment:
       DATABASE_URL: postgresql://user:password@pg:5432/tictactoe
+      JWT_SECRET: SUPER_SECURE_SECRET
+      JWT_ALGORITHM: HS256
       UVICORN_LOG_LEVEL: warning
       FASTAPI_LOG_LEVEL: warning
     depends_on:

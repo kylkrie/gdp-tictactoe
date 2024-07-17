@@ -32,7 +32,7 @@ CMD ["./start_local.sh"]
 # python isn't compiled so I didn't see the need for a builder stage
 # if there were C extensions, or the need to compile numpy/pandas for example
 # then it could be beneficial to have a builder stage to do that step
-# the idea is to keep the production image small by keeping 
+# the idea is to keep the production image small by keeping
 # build-time dependencies out of the production image
 #####################
 
@@ -55,6 +55,8 @@ RUN pip install --no-cache-dir -r requirements.txt
 # copy src
 COPY ./migrations ./migrations
 COPY ./app ./app
+COPY ./tests ./tests
+COPY ./pytest.ini .
 COPY ./run_migrations.py .
 COPY ./start_prod.sh .
 

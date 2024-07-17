@@ -1,7 +1,7 @@
-from typing import List
-from fastapi import APIRouter, Depends, HTTPException, Request
+from fastapi import APIRouter, Depends, Request
 from pydantic import BaseModel
 
+from app.auth import get_user_id
 from app.exceptions.db import ItemNotFoundException
 
 from .dto import BoardListResponse, BoardResponse, PublicBoard
@@ -19,8 +19,10 @@ def get_board_service(req: Request) -> BoardService:
 
 
 @router.post("", response_model=BoardResponse)
-async def create_board(board_service: BoardService = Depends(get_board_service)):
-    user_id = "test"
+async def create_board(
+    user_id: str = Depends(get_user_id),
+    board_service: BoardService = Depends(get_board_service),
+):
     board_entity = await board_service.create_board(user_id)
 
     return BoardResponse(board=PublicBoard.from_entity(board_entity))
@@ -61,12 +63,12 @@ class MakeMoveBody(BaseModel):
 
 
 @router.post("/{id}/move", response_model=BoardResponse)
-async def get_board(
+async def make_move(
     id: int,
     body: MakeMoveBody,
+    user_id: str = Depends(get_user_id),
     board_service: BoardService = Depends(get_board_service),
 ):
-    user_id = "test"
     board_entity = await board_service.make_move(id, user_id, body.position)
 
     return BoardResponse(board=PublicBoard.from_entity(board_entity))
