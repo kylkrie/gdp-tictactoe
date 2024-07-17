@@ -2,9 +2,20 @@
 
 A TicTacToe project, with game logic in the backend and a simple web frontend.
 
-I chose to build tictactoe using fastapi and angular to show that I'll be able to contribute despite not having much experience with these technologies. I hope to show that my system/api design standards and experience will carry over. 
+I chose to build tictactoe using fastapi and angular to show that I'll be able to contribute despite not having much experience with these technologies. I spent most of the time on the api service.
 
-My main focus was on the backend, frontend is very simple just to be able to play.
+I prioritized showing system design, code, and spent time learning python concepts for this project. I could've spend time on logging, docstrings, openapi docs setup, e2e tests. There's always more I could do but I think this is a good place to stop.
+
+Concepts:
+- Models: business logic. tictactoe game rules and actions.
+- Stores: persistance layer. save and load models, abstracts database interactions.
+- Services: higher level app logic, coordinates models and stores.
+- API/Routes: interface layer, exposes service functionality, handles http request/response and dtos.
+
+Asyncpg and raw SQL over an ORM
+- I like to keep things simple. An ORM intruduces more dependencies and libraries to learn
+- Not a fan of "magic", I like knowing and having control of the actual SQL statements being run
+- Added a simple migrations script, if rollbacks or anything more complicated is needed, could warrant using a library
 
 ## Table of Contents
 
