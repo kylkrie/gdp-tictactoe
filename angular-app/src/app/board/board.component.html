@@ -1,0 +1,20 @@
+<div class="board-container">
+  <h2 class="title">Tic-Tac-Toe</h2>
+  @if (board) {
+    <p class="player-symbol">Player: {{playerSymbol.toUpperCase()}}</p>
+    <div class="board">
+      @for (space of board.spaces; track space; let i = $index) {
+        <button 
+          class="board-cell"
+          (click)="makeMove(i)"
+          [disabled]="board.spaces[i] != '_' || gameResult !== ''">
+          {{ space == '_' ? '' : space.toUpperCase() }}
+        </button>
+      }
+    </div>
+    @if (gameResult) {
+      <p class="game-result">{{ gameResult }}</p>
+    }
+    <button class="new-game-btn" (click)="newGame()">New Game</button>
+  }
+</div>
