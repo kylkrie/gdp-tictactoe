@@ -2,9 +2,9 @@
 
 A TicTacToe project, with game logic in the backend and a simple web frontend.
 
-I chose to build tictactoe using fastapi and angular to show that I'll be able to contribute despite not having much experience with these technologies. I spent most of the time on the api service.
+I chose to build tictactoe using fastapi and angular to show that I'll be able to contribute despite not having much experience with these technologies.
 
-I prioritized showing system design, code, and spent time learning python concepts for this project. I could've spend time on logging, docstrings, openapi docs setup, e2e tests. There's always more I could do but I think this is a good place to stop.
+I could've added more features like keeping score, a leaderboard, or game history but the task was just tictactoe. I decided to make a basic but solid tictactoe with good architecture, some basic auth, database connection, error handling, and a good local dev and prod setup to show experience with these concepts. It could still use some structured logging, docstrings, openapi docs setup, e2e tests but I think this is a good place to stop.
 
 Concepts:
 - Models: business logic. tictactoe game rules and actions.
@@ -29,8 +29,8 @@ Asyncpg and raw SQL over an ORM
 
 - Docker and Docker Compose
 - For local development:
-  - Python 3.9.19
-  - Node.js and npm (I'm on v18.15.0)
+  - Python 3.9
+  - Node.js and npm (I'm on v18.15.0, not sure what min version would be)
 
 ## Installation
 
@@ -62,11 +62,18 @@ pip install -r requirements.txt
 cd ../angular-app
 npm install
 ```
+Tests can be run locally with pytest
+```sh
+cd api-service
+pytest
+```
 
 ## Production Setup
 
 This provides a way of testing the production build flow. Issues with production specific configs, or bundling/copying static assets can happen for example.
 Uses nginx to serve the website, this is so the production flow can be tested locally for the purpose of this exercise. For actual production I would have a CICD flow to build and upload to S3 behind a CDN like Cloudfront or Cloudflare. This removes the need to manage an nginx server.
+
+Tests are run before the api service starts up in prod. They could be run in a pre-commit git hook, but I like them in a CI flow so they're run in a consistent environment and don't take up dev time. I don't have a CI flow so I at least made them run before the prod service starts up.
 
 ```sh
 docker compose -f docker-compose.prod.yml up --build
